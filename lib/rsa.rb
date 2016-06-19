@@ -34,6 +34,20 @@ module RSA
     def RSA.decrypt(m, d, n)
         Mod.exp(m, d, n)
     end
+    
+    def RSA.decrypt_perf(c,d, p, q)
+        if q > p then
+            p_tmp = p
+            p = q
+            q = p_tmp
+        end
+        mp = Mod.exp(c,d,p)
+        mq = Mod.exp(c,d,q)
+        euclidSet = Euclid.euclidAlgorithm(p,q)
+        yp = euclidSet.s
+        yq = euclidSet.t
+        m = (mp * yq * q + mq * yp * p) % (p * q)
+    end
 end
 
 class RSAKeySet
@@ -57,7 +71,7 @@ class RSAKeySet
         
     private
     def updateValues(p, q, e)
-        if (isPrime(p) && isPrime(q)) then
+        if (PrimeNumber.isPrime(p) && PrimeNumber.isPrime(q)) then
             @p = p
             @q = q
             @n = p * q
