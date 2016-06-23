@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require 'mod.rb'
-require 'primeNumber.rb'
+require 'Mod.rb'
+require 'PrimeNumbers.rb'
 require 'Euclid.rb'
 
 module Phi
@@ -88,5 +88,13 @@ module Phi
                     end
                      }
         return result
+    end
+    
+    def Phi.isGenerator(g, groupNumber)
+        getOrder(g, groupNumber) == getPhi(groupNumber)
+    end
+    
+    def Phi.isPrimeRoot(g, groupNumber)
+        PrimeNumbers.isPrime(g) && isGenerator(g, groupNumber)
     end
 end
