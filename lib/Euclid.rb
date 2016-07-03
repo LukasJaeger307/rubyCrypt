@@ -34,6 +34,21 @@ module Euclid
         end
         euclid.executeEuclid
     end
+    
+    def Euclid.chineseRemainderTheorem(mods)
+        m = 1
+        mods.keys.each do |mi|
+            m *= mi
+        end
+        x = 0
+        mods.keys.each do |mi|
+            bigMi = m / mi
+            euclidSet = euclidAlgorithm(mi, bigMi)
+            yi = euclidSet.s
+            x += yi * mods[mi] * bigMi
+        end
+        return x % m     
+    end
 end
 
 class EuclidSet

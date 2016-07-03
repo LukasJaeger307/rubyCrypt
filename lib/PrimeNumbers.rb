@@ -72,6 +72,25 @@ module PrimeNumbers
         end
         factors
     end
+    
+    def PrimeNumbers.getExponentToPrimeFactor(factors, factor)
+        result = 0
+        factors.each{|x|
+                    if x == factor then
+                       result += 1
+                    end
+                     }
+        return result
+    end
+    
+    def PrimeNumbers.factorizeWithExponents(x)
+        factors = factorize(x)
+        result = Hash.new(0)
+        factors.each do |x|
+            result[x] = getExponentToPrimeFactor(factors, x)
+        end
+        return result
+    end
 end
     
         

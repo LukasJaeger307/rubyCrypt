@@ -71,7 +71,7 @@ class RSAKeySet
         
     private
     def updateValues(p, q, e)
-        if (PrimeNumber.isPrime(p) && PrimeNumber.isPrime(q)) then
+        if (PrimeNumbers.isPrime(p) && PrimeNumbers.isPrime(q)) then
             @p = p
             @q = q
             @n = p * q

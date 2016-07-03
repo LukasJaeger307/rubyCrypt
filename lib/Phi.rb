@@ -58,7 +58,7 @@ module Phi
             dividers = factors.uniq
             fArray = Hash.new
             dividers.each do|p|
-                exponent = getExponentToPrimeFactor(factors,p)
+                exponent = PrimeNumbers.getExponentToPrimeFactor(factors,p)
                 fCandidates = 0..exponent
                 f = 0
                 fCandidates.each do|candidate|
@@ -71,23 +71,13 @@ module Phi
             end
             order = 1
             fArray.each do |p,f|
-                e = getExponentToPrimeFactor(factors, p)
+                e = PrimeNumbers.getExponentToPrimeFactor(factors, p)
                 order = Mod.mul(order, Mod.exp(p, e-f, mod), mod)
             end
             return order
         else
             return 0
         end
-    end
-    
-    def Phi.getExponentToPrimeFactor(factors, factor)
-        result = 0
-        factors.each{|x|
-                    if x == factor then
-                       result += 1
-                    end
-                     }
-        return result
     end
     
     def Phi.isGenerator(g, groupNumber)
