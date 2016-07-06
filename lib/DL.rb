@@ -112,7 +112,48 @@ module DL
     end
     
     def DL.pohligHellman(number, base, n)
-        return 0
+        phi = Phi.getPhi(n)
+        factors = PrimeNumbers.factorizeWithExponents(phi)
+        mods = Hash.new(0)
+        factors.keys.each do |p|
+            ep = factors[p]
+            np = phi / p**ep
+            baseP = Mod.exp(base, np, n)
+            numberP = Mod.exp(number, np, n)
+            xp = getXP(numberP, baseP, p, ep, n)
+            mods[p**factors[p]] = xp
+        end
+        return Euclid.chineseRemainderTheorem(mods)
+    end
+    
+    def DL.getXP(numberP, baseP, p, ep, n)
+        baseExp = Mod.exp(p, ep-1, n)
+        numberExp = baseExp
+        invBase = Euclid.euclidAlgorithm(n,baseP).t
+        localNumber = numberP
+        localBase = Mod.exp(baseP, baseExp, n)
+        numberIExp = 0
+        x = Hash.new
+        iRange = 0..ep-1
+        iRange.each do|i|
+            numberExp = Mod.exp(p,ep-i-1,n)
+            shanksNum = Mod.exp(localNumber, numberExp, n)
+            puts "NumberExp: #{numberExp}"
+            puts "LocalNum : #{localNumber}"
+            puts "ShanksNum: #{shanksNum}"
+            puts "localBase: #{localBase}"
+            localLog = shanks(shanksNum,localBase, n)
+            puts localLog
+            x[i] = localLog
+            numberIExp += Mod.mul(Mod.exp(p,i,n), localLog, n)
+            puts "NumberIExp: #{numberIExp}"
+            localNumber = Mod.mul(numberP, Mod.exp(invBase,numberIExp,n),n)
+        end
+        result = 0
+        x.keys.each do |i|
+            result += Mod.mul(x[i],Mod.exp(p,i,n),n)
+        end
+        return result
     end
     
     def DL.primeExp(number, base, n)
@@ -121,7 +162,7 @@ module DL
         mods = Hash.new(0)
         factors.keys.each do |p|
             ep = factors[p]
-            np = n / p**ep
+            np = phi / p**ep
             baseP = Mod.exp(base, np, n)
             numberP = Mod.exp(number, np, n)
             xp = shanks(numberP, baseP, n)
