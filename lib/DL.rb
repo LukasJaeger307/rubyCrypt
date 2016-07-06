@@ -138,15 +138,9 @@ module DL
         iRange.each do|i|
             numberExp = Mod.exp(p,ep-i-1,n)
             shanksNum = Mod.exp(localNumber, numberExp, n)
-            puts "NumberExp: #{numberExp}"
-            puts "LocalNum : #{localNumber}"
-            puts "ShanksNum: #{shanksNum}"
-            puts "localBase: #{localBase}"
             localLog = shanks(shanksNum,localBase, n)
-            puts localLog
             x[i] = localLog
             numberIExp += Mod.mul(Mod.exp(p,i,n), localLog, n)
-            puts "NumberIExp: #{numberIExp}"
             localNumber = Mod.mul(numberP, Mod.exp(invBase,numberIExp,n),n)
         end
         result = 0
